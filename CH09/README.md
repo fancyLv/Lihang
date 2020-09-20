@@ -1,4 +1,5 @@
 # 	CH09 EM算法及其推广
+![Hits](https://www.smirkcao.info/hit_gits/Lihang/CH09/README.md)
 
 [TOC]
 
@@ -86,7 +87,7 @@
 >
 >假设$Y$和$Z$的联合概率分布是$P(Y,Z|\theta)$，那么完全数据的对数似然函数是$\log P(Y,Z|\theta)$
 
-上面这部分简单对应一下，这里说明一下，你看到下面概率分布和似然函数形式看起来一样。在概率中，$\theta$已知, 求$Y$，在似然函数中通过已知的Y去求$\theta​$
+上面这部分简单对应一下，这里说明一下，你看到下面概率分布和似然函数形式看起来一样。在概率中，$\theta$已知, 求$Y$，在似然函数中通过已知的Y去求$\theta$
 
 |   |       |     |       |
 | - | - | - | - |
@@ -98,7 +99,7 @@
 
 有一点要注意下, 这里没有出现$X$, 在**9.1.3**节中有提到一种理解
 
-> - 有时训练数据只有输入没有对应的输出${(x_1,\cdot),(x_2,\cdot),\dots,(x_N,\cdot)}​$，从这样的数据学习模型称为非监督学习问题。
+> - 有时训练数据只有输入没有对应的输出${(x_1,\cdot),(x_2,\cdot),\dots,(x_N,\cdot)}$，从这样的数据学习模型称为非监督学习问题。
 > - EM算法可以用于生成模型的非监督学习。
 > - 生成模型由联合概率分布$P(X,Y)$表示，可以认为非监督学习训练数据是联合概率分布产生的数据。$X$为观测数据， $Y$为未观测数据。
 
@@ -287,7 +288,7 @@ $$
 
 > 输入: 观测变量数据$Y$，隐变量数据$Z$，联合分布$P(Y,Z|\theta)$，条件分布$P(Z|Y,\theta)$
 >
-> 输出: 模型参数$\theta​$
+> 输出: 模型参数$\theta$
 >
 > 1. 选择参数的初值$\theta^{(0)}$，开始迭代
 >
@@ -311,7 +312,7 @@ $$
 
 注意Q函数的定义，可以帮助理解上面E步中的求和表达式
 
-完全数据的**对数似然函数$\log P(Y, Z|\theta)$关于**给定观测数据$Y$的当前参数$\theta^{(i)}$下对为观测数据$Z$的**条件概率分布$P(Z|Y,\theta^{(i)})​$的期望**称为Q函数。
+完全数据的**对数似然函数$\log P(Y, Z|\theta)$关于**给定观测数据$Y$的当前参数$\theta^{(i)}$下对为观测数据$Z$的**条件概率分布$P(Z|Y,\theta^{(i)})$的期望**称为Q函数。
 
 #### BMM的EM算法
 
@@ -360,19 +361,19 @@ TODO:更新下这个图
 
 ### 高斯混合模型
 
-**混合模型**, 有多种, 高斯混合模型是最常用的.
+**混合模型**，有多种，高斯混合模型是最常用的。
 
 高斯混合模型(Gaussian Mixture Model)是具有如下**概率分布**的模型:
 $$
 P(y|\theta)=\sum\limits^{K}_{k=1}\alpha_k\phi(y|\theta_k)
 $$
-其中, $\alpha_k$是系数, $\alpha_k\ge0$, $\sum\limits^{K}_{k=1}\alpha_k=1$, $\phi(y|\theta_k)$ 是**高斯分布密度**, $\theta_k=(\mu,\sigma^2)$
+其中，$\alpha_k$是系数，$\alpha_k\ge0$，$\sum\limits^{K}_{k=1}\alpha_k=1$, $\phi(y|\theta_k)$ 是**高斯分布密度**，$\theta_k=(\mu,\sigma^2)$
 $$
 \phi(y|\theta_k)=\frac{1}{\sqrt{2\pi}\sigma_k}\exp\left(-\frac{(y-\mu_k)^2}{2\sigma_k^2}\right)
 $$
-上式表示第k个**分**模型.
+上式表示第k个**分**模型。
 
-以上, 注意几点:
+以上, 注意几点：
 
 1. GMM的描述是概率分布，形式上可以看成是加权求和
 1. 加权求和的权重$\alpha$满足$\sum_{k=1}^K\alpha_k=1$的约束
@@ -382,13 +383,15 @@ $$
 
 1. 书中描述的是一维的高斯混合模型，d维的形式如下[^2]，被称作多元正态分布，也叫多元高斯分布
 $$
-\phi(y|\theta_k)=\frac{1}{\sqrt{(2\pi)^d|\Sigma|}}\exp\left(-\frac{(y-\mu_k)^T\Sigma^{-1}(y-\mu_k)}{2}\right)其中,协方差矩阵
+\phi(y|\theta_k)=\frac{1}{\sqrt{(2\pi)^d|\Sigma|}}\exp\left(-\frac{(y-\mu_k)^T\Sigma^{-1}(y-\mu_k)}{2}\right)
 $$
 其中，协方差矩阵$\Sigma\in \R^{n\times n}$
 
+5. 另外，关于高斯模型的混合，还有另外一种混合的方式，沿着时间轴的方向做混合。可以理解为滤波器，典型的算法就是Kalman Filter，对应了时域与频域之间的关系，两个高斯的混合依然是高斯，混合的方法是卷积，而不是简单的加法，考虑到的是概率密度的混合，也是一种线性的加权。
+
 #### GMM的图模型
 
-这个弄的不咋好看, plate notation
+这个弄的不咋好看，plate notation
 
 ![图模型](assets/gmm_graph_model.png)
 
@@ -416,9 +419,9 @@ $$
 - 观测数据$y_j, j=1,2,\dots,N$这样产生, 是**已知的**:
 
   1. 依概率$\alpha_k$**选择第$k$个**高斯分布分模型$\phi(y|\theta_k)$;
-  1. 依第$k​$个分模型的概率分布$\phi(y|\theta_k)​$生成观测数据$y_j​$
-  1. 反映观测数据$y_j​$来自第$k​$个分模型的数据是**未知的**, $k=1,2,\dots,K​$ 以**隐变量$\gamma_{jk}​$**表示
-     **注意这里$\gamma_{jk}​$的维度$(j\times k)​$**
+  1. 依第$k$个分模型的概率分布$\phi(y|\theta_k)$生成观测数据$y_j$
+  1. 反映观测数据$y_j$来自第$k$个分模型的数据是**未知的**, $k=1,2,\dots,K$ 以**隐变量$\gamma_{jk}$**表示
+     **注意这里$\gamma_{jk}$的维度$(j\times k)$**
 $$
   \gamma_{jk}=
   \begin{cases}
@@ -432,7 +435,7 @@ $$
   1. 隐变量和观测变量的数据对应, 每个观测数据，对应了一个隐变量，$\gamma_{jk}$是一种one-hot的形式。
   1. 具体的单一观测数据是混合模型中的某一个模型产生的
 
-- 完全数据为$(y_j,\gamma_{j1},\gamma_{j2},\dots,\gamma_{jK},k=1,2,\dots,N)​$
+- 完全数据为$(y_j,\gamma_{j1},\gamma_{j2},\dots,\gamma_{jK},k=1,2,\dots,N)$
 
 - 完全数据似然函数
 $$
@@ -451,7 +454,7 @@ $$
 $$
 ##### 2. E步,确定Q函数
 
-把$Q​$ 函数表示成参数形式
+把$Q$ 函数表示成参数形式
 
 $$\begin{aligned}Q(\theta,\theta^{(i)})=&E[\log P(y,\gamma|\theta)|y,\theta^{(i)}]\\=&\color{green}E\color{black}\left\{\sum_{k=1}^K\left\{\color{red}n_k\color{black}\log \alpha_k+\color{blue}\sum_{j=1}^N\gamma _{jk}\color{black}\left[\log \left(\frac{1}{\sqrt{2\pi}}\right)-\log \sigma _k-\frac{1}{2\sigma^2(y_j-\mu_k)^2}\right]\right\}\right\}\\=&\color{green}E\color{black}\left\{\sum_{k=1}^K\left\{\color{red}\sum_{j=1}^N\gamma_{jk}\color{black}\log \alpha_k+\color{blue}\sum_{j=1}^N\gamma _{jk}\color{black}\left[\log \left(\frac{1}{\sqrt{2\pi}}\right)-\log \sigma _k-\frac{1}{2\sigma^2(y_j-\mu_k)^2}\right]\right\}\right\}\\=&\sum_{k=1}^K\left\{\color{red}\sum_{j=1}^{N}(\color{green}E\color{red}\gamma_{jk})\color{black}\log \alpha_k+\color{blue}\sum_{j=1}^N(\color{green}E\color{blue}\gamma _{jk})\color{black}\left[\log \left(\frac{1}{\sqrt{2\pi}}\right)-\log \sigma _k-\frac{1}{2\sigma^2(y_j-\mu_k)^2}\right]\right\}\\\end{aligned}$$
 
@@ -461,11 +464,11 @@ $$\begin{aligned}\hat \gamma _{jk}= &\color{purple}E(\gamma_{jk}|y,\theta)=P(\ga
 
 1. 注意这里$E(\gamma_{jk}|y,\theta)$，记为$\hat\gamma_{jk}$， 对应了E步求的**期望**中的一部分。
 1. 对应理解一下上面公式中的红色，蓝色和绿色部分，以及$\hat\gamma_{jk}$中红色和绿色的对应关系
-1. 这里用到了$n_k=\sum_{j=1}^N\gamma_{jk}​$
+1. 这里用到了$n_k=\sum_{j=1}^N\gamma_{jk}$
 1. $\hat \gamma_{jk}$为分模型$k$对观测数据$y_j$的响应度。这里，紫色标记的第一行参考伯努利分布的期望。
 
-$$Q(\theta,\theta^{(i)})=\sum_{k=1}^Kn_k\log \alpha_k+\sum_{j=1}^N\hat \gamma_{jk}\left[\log \left(\frac{1}{\sqrt{2\pi}}\right)-\log \sigma_k-\frac{1}{2\sigma_k^2}(y_j-\mu_k)^2\right]​$$
-其中$i​$表示第$i​$步迭代
+$$Q(\theta,\theta^{(i)})=\sum_{k=1}^Kn_k\log \alpha_k+\sum_{j=1}^N\hat \gamma_{jk}\left[\log \left(\frac{1}{\sqrt{2\pi}}\right)-\log \sigma_k-\frac{1}{2\sigma_k^2}(y_j-\mu_k)^2\right]$$
+其中$i$表示第$i$步迭代
 
 1. 写出$Q$ 函数在推导的时候有用，但是在程序计算的时候，E步需要计算的就是$\hat\gamma_{jk}$，M步用到了这个结果。其实抄公式没有什么意义，主要是能放慢看公式的速度。和图表一样，公式简洁的表达了很多信息，公式中也许更能体会到数学之美。
 
@@ -493,6 +496,10 @@ $$
 1. 这几个公式中待求的变量的维度和角标的关系。
 1. 这里面有求和，前面提到过要注意体会每一步刷的是模型，还是样本
 
+#### GMM在CV中的应用
+
+其实CV中用到了很多统计的方法，GMM在GrabCut方法中用于前景和背景建模。
+
 ### Kmeans
 
 另外，直觉上看，GMM最直观的想法就是Kmeans，那么:
@@ -509,7 +516,7 @@ $$
 
 ### 广义期望极大
 
-广义期望极大(generalized expectation maximization, $GEM​$)
+广义期望极大(generalized expectation maximization, $GEM$)
 
 广义期望极大是为了解决什么问题？
 

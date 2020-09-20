@@ -1,4 +1,5 @@
 # CH07 支持向量机
+![Hits](https://www.smirkcao.info/hit_gits/Lihang/CH07/README.md)
 
 [TOC]
 
@@ -44,6 +45,7 @@
 - Vapnik全名弗拉基米尔·万普尼克， 出生于苏联， VC理论的主要创建人之一，统计学习理论之父。1990年底移居美国，1991-2001年间，他在AT&T工作。2006年成为美国国家工程院院士。2014年加入Facebook人工智能实验室。
 - 1995年SVN的文章结尾有这样的描述：```The support-vector network combines 3 ideas: the solution technique from optimal hy- perplanes (that allows for an expansion of the solution vector on support vectors), the idea of convolution of the dot-product (that extends the solution surfaces from linear to non-linear), and the notion of soft margins (to allow for errors on the training set).```
 - KKT条件是该最优化问题的充分必要条件。
+- 样本比较多的时候，Boosting和RF往往能得到最好的效果，但是数据集较少的时候，SVM的效果可能会比较好。
 
 ---
 
@@ -287,7 +289,41 @@ $$\min\limits_{w,b} \sum\limits_{i=1}^N\left[1-y_i(w\cdot x+b)\right]_++\lambda\
 - 第一项是经验损失或经验风险，函数$L(y(w\cdot x+b))=[1-y(w\cdot x+b)]_+$称为合页损失，可以表示成$L = \max(1-y(w\cdot x+b), 0)$
 - 第二项是**系数为$\lambda$的$w$的$L_2$范数的平方**，是正则化项
 
+书中这里通过定理7.4说明了用合页损失表达的最优化问题和线性支持向量机原始最优化问题的关系。
+$$
+\begin{align}
+\min_{w,b,\xi} &\frac{1}{2}\left\|w\right\|^2+C\sum_{i=1}^N\xi_i\\
+s.t. \ \ \ &y_i(w\cdot x_i+b)\geqslant1-\xi_i, i=1,2,\dots,N\\
+&\xi_i\geqslant0,i=1,2,\dots,N
+\end{align}
+$$
+等价于
+$$
+\min\limits_{w,b} \sum\limits_{i=1}^N\left[1-y_i(w\cdot x+b)\right]_++\lambda\left\|w\right\|^2
+$$
+证明：
+
+令合页损失$\left[1-y_i(w\cdot x+b)\right]_+=\xi_i$，合页损失非负，所以有$\xi_i\ge0$，这个对应了原始最优化问题中的**一个约束【1】**。
+
+还是根据合页损失非负，当$1-y_i(w\cdot x+b)\leq\color{red}0​$的时候，有$\left[1-y_i(w\cdot x+b)\right]_+=\color{red}\xi_i=0​$，所以有
+
+$1-y_i(w\cdot x+b)\leq\color{red}0=\xi_i$，这对应了原始最优化问题中的**另一个约束【2】**。
+
+所以，在满足这**两个约束【1】【2】**的情况下，有
+$$
+\begin{aligned}
+\min\limits_{w,b} &\sum\limits_{i=1}^N\left[1-y_i(w\cdot x+b)\right]_++\lambda\left\|w\right\|^2\\
+\min\limits_{w,b} &\sum\limits_{i=1}^N\xi_i+\lambda\left\|w\right\|^2\\
+\min\limits_{w,b} &\frac{1}{C}\left(\frac{1}{2}\left\|w\right\|^2+C\sum\limits_{i=1}^N\xi_i\right), with \  \lambda=\frac{1}{2C}\\
+\end{aligned}
+$$
+看下下面这个图，其中合页损失和感知机损失函数之间的关系，合页损失要求函数间隔大于1的时候才没有损失（loss=0），而感知机只要函数间隔大于0就认为没有损失，所以说合页损失对学习有更高的要求。
+
+再解释下，对于线性支持向量机大于一的意思是符号为正，且值要大于1；对于感知机大于零的意思是符号为正，就可以了。
+
 ![test](assets/fig76.png)
+
+
 
 ```python
 import numpy as np
@@ -304,7 +340,7 @@ y3 = list(map(lambda x:1 if x <= 0 else 0, x))
 y4 = list(map(lambda x:np.log2(1+np.exp(-x)), x))
 # adaboost
 y5 = list(map(lambda x:np.exp(-x), x))
-plt.plot(x,y1,'--',label='perceptron loss')
+plt.plot(x,y1,'--', label='perceptron loss')
 plt.plot(x,y2, '-', label='hinge loss' )
 plt.plot(x,y3, '-', label='0-1 loss')
 plt.plot(x,y4, '-', label='lr')
@@ -313,7 +349,7 @@ plt.plot(x,y5, '-', label='adaboost')
 plt.legend()
 plt.xlim(-3,3)
 plt.ylim(0,3)
-plt.xlabel("function margin")
+plt.xlabel("functional margin")
 plt.ylabel("loss")
 plt.savefig("test.png")
 plt.show()
